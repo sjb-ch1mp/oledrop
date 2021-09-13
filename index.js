@@ -1,7 +1,8 @@
 var express = require("express");
-var app = express();
 const fs = require('fs');
 const cors = require('cors');
+
+var app = express();
 app.use(cors());
 
 app.get('/oledrop*', function (req, res) {
@@ -22,8 +23,6 @@ app.post('/oledrop', function (req, res) {
 });
 
 var server = app.listen(3000, function () {
-	var host = server.address().address;
 	var port = server.address().port;
-
-	console.log("oledrop listening at http://%s:%s", host, port);
+	console.log("oledrop listening at http://localhost:%s", port);
 });
