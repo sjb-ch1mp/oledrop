@@ -1,16 +1,16 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
-const fs = require('fs');
 const cors = require('cors');
+const exec = require('child_process').exec;
+const path = require('path');
+const fs = require('fs');
 
 var app = express();
 app.use(cors());
 app.use(fileUpload({
 	safeFileNames: /(\s+|\W+)/g,
 	preserveExtension: 4,
-	createParentPath: true,
-	useTempFiles: true,
-	tempFileDir: __dirname + "/app/tmp/"
+	createParentPath: true
 }));
 
 app.get('/oledrop*', function (req, res) {
@@ -26,25 +26,54 @@ app.get('/', function (req, res) {
 	res.redirect(302, '/oledrop');
 });
 
+//https://www.w3jar.com/node-file-upload-with-express-js/
 app.post('/oledrop', function (req, res) {
-	console.log("[+] A post request was received by /oledrop");
+	//console.log("[+] A post request was received by /oledrop");
+	
+	let resData = [];
 	if (!req.files || Object.keys(req.files).length === 0) {
-		let data = {
+		resData.push({
 			'error':'NoFile',
 			'message':'oledrop did not receive a file'
-		};
-		res.setHeader('Content-Type', 'application/json');
-		res.status(400).send(JSON.stringify(data));
+		});
+		return res.setHeader('Content-Type', 'application/json')
+		.status(400)
+		.send(JSON.stringify(resData));
 	}
 
 	let file = req.files.drop;
-	console.log("|__ oledrop received file: " + file.name);
-	let data = {
-		'error':'UploadSuccess',
-		'message':'oledrop successfully received file ' + file.name
-	}
-	res.setHeader('Content-Type', 'application/json');
-	res.status(200).send(JSON.stringify(data));
+	let tmpPath = path.join(__dirname, "app", "tmp", file.name);
+	let olePath = path.join(__dirname, "venv", "Scripts");
+	const analyze = new Promise( (resolve, reject) => {
+		file.mv(tmpPath);
+		let cmd = "cd " + olePath + " && activate && olevba -j " + tmpPath + " && deactivate";
+		exec(cmd, (err, stdout, stderr) => {
+			if (err) {
+				reject(err);
+			}else{
+				resolve(stdout);
+			}
+		});
+	});
+
+	analyze
+	.then(results => {
+		fs.unlink(tmpPath, (err) => {
+			if(err) throw err;
+		});
+		res.setHeader('Content-Type', 'application/json')
+		.status(200)
+		.send(results);
+	})
+	.catch(err => {
+		resData.push({
+			'error':'500',
+			'message':err.message
+		});
+		res.setHeader('Content-Type', 'application/json')
+		.status(500)
+		.send(JSON.stringify(resData));
+	});
 });
 
 var server = app.listen(3000, function () {

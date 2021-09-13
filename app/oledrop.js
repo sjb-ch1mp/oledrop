@@ -1,18 +1,19 @@
-function oledrop(input){
+function oledrop(){
     //olevba -j test.xlsm 2>/dev/null | sed 's/{sis\.\.\./{/g'
     //sed and stderr redirection required due to issue https://github.com/decalage2/oletools/issues/701
-    let file = input.files[0];
-    let formData = new FormData();
-    formData.append("drop", file);
-    fetch("http://ch1mpfs:3000/oledrop", {
-        method:"POST",
-        mode:"cors",
-        data:formData
+    
+    //https://stackoverflow.com/questions/36067767/how-do-i-upload-a-file-with-the-js-fetch-api
+    let data = new FormData();
+    data.append('drop', document.getElementById('drop').files[0]);
+
+    fetch("/oledrop", {
+        method: "POST",
+        mode: "cors",
+        body: data
     })
     .then(response => response.json())
-    .then(result => {
-        buildResults(result);
-        padResult();
+    .then(data => {
+        buildResults(data);
     })
     .catch((err) => {
         notify(err.message);
