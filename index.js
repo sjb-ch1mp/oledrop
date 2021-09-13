@@ -1,6 +1,8 @@
 var express = require("express");
 var app = express();
 const fs = require('fs');
+const cors = require('cors');
+app.use(cors());
 
 app.get('/oledrop*', function (req, res) {
 	var appdir = __dirname + "/app/";
