@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <base href="http://ch1mpfs:3000/oledrop/">
+        <!--base href="http://ch1mpfs:3000/oledrop/"-->
         <meta charset="UTF-8">
         <link rel="stylesheet" href="oledrop.css">
         <script src="oledrop.js"></script>
@@ -18,10 +18,7 @@
                     </div>
                     <div id="button-container">
                         <div id="submit" class="menu-button" onclick="document.getElementById('fileinput').click()">submit</div>
-                        <form action="http://ch1mpfs.lan:3000/oledrop" method="post" style="display: none;">
-                            <input name="fileinput" id="fileinput" type="file" onchange="document.getElementById('sendfile').click()">
-                            <input name="sendfile" type="submit" id="sendfile">
-                        </form>
+                        <input id="drop" type="file" onchange="oledrop(this)" style="display: none;">
                         <div id="save" class="menu-button" onclick="downloadResults()">save</div>
                     </div>
                 </div>

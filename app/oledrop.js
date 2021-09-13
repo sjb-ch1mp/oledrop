@@ -1,8 +1,22 @@
 function oledrop(input){
     //olevba -j test.xlsm 2>/dev/null | sed 's/{sis\.\.\./{/g'
     //sed and stderr redirection required due to issue https://github.com/decalage2/oletools/issues/701
-    buildResults(result);
-    padResult();
+    let file = input.files[0];
+    let formData = new FormData();
+    formData.append("drop", file);
+    fetch("http://ch1mpfs:3000/oledrop", {
+        method:"POST",
+        mode:"cors",
+        data:formData
+    })
+    .then(response => response.json())
+    .then(result => {
+        buildResults(result);
+        padResult();
+    })
+    .catch((err) => {
+        notify(err.message);
+    });
 }
 
 function buildResults(olevbaResults){
