@@ -1,5 +1,7 @@
 function oledrop(){    
     //https://stackoverflow.com/questions/36067767/how-do-i-upload-a-file-with-the-js-fetch-api
+    PREVIOUS_RESULTS = null;
+
     let data = new FormData();
     data.append('drop', document.getElementById('drop').files[0]);
 
@@ -38,54 +40,8 @@ function buildResults(olevbaResults){
 		for(let i in olevbaResults[1].macros){
 			results.appendChild(buildMacroContainer(olevbaResults[1].macros[i]));
 		}
+        PREVIOUS_RESULTS = olevbaResults;
 	}
-
-	/*
-    let error = null;
-    for(let i in olevbaResults){
-        if("error" in olevbaResults[i]){
-            error = olevbaResults[i];
-            break;
-        }
-    }
-    if(error){
-        notify(error.error + ": " + error.message);
-        return;
-    }*/
-
-    //get detections, file, type and macros
-    
-	/*
-    let detections = null;
-    let macros = null;
-    let type = null;
-    let file = null;
-    for(let i in olevbaResults){
-        if("analysis" in olevbaResults[i]){
-            detections = olevbaResults[i].analysis;
-        }
-        if("macros" in olevbaResults[i]){
-            macros = olevbaResults[i].macros;
-        }
-        if("type" in olevbaResults[i]){
-            type = olevbaResults[i].type;
-        }
-        if("file" in olevbaResults[i]){
-            file = olevbaResults[i].file;
-        }
-        if(macros && detections && file && type){
-            break;
-        }
-    }
-
-    //add header
-    notify("Results for " + file + " (" + type + ")");
-
-    //add detections and macros to results
-    results.appendChild(buildDetectionContainer(detections));
-    for(let i in macros){
-        results.appendChild(buildMacroContainer(macros[i]));
-    }*/
 }
 
 function buildDetectionContainer(detections){
@@ -126,21 +82,31 @@ function padResult(){
     document.getElementById("result").setAttribute("style", "padding-top: " + headerHeight + "px");
 }
 
-function downloadResults(){
-    if(OLEVBA_RESULTS != null){
-        let fileName = OLEVBA_RESULTS.filename.replace(/\./g, "_") + ".txt";
-        let blob = new Blob([OLEVBA_RESULTS.results], {type: "text/plain"});
-        if(window.navigator.msSaveOrOpenBlob){
-            window.navigator.msSaveOrOpenBlob(blob, fileName);
-        }else{
-            let element = document.createElement('a');
-            element.href = window.URL.createObjectURL(blob);
-            element.download = fileName;
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
-        }
-    }else{
-        notify("No results to download!");
+function showResultsAsText(){
+    if(!PREVIOUS_RESULTS){
+        notify("There are no results!");
     }
+
+    let results = document.getElementById('result');
+    results.innerHTML = '';
+    
+    let resultTextArea = document.createElement('textarea');
+    resultTextArea.classList.add('macro');
+
+    let resultText = '[+] == RESULTS FOR FILE "' + PREVIOUS_RESULTS[0].name + " (" + PREVIOUS_RESULTS[0].type + ") ==\n\n";
+    if(PREVIOUS_RESULTS[2].hasDetections){
+        resultText += "[+] DETECTIONS\n";
+        for(let i in PREVIOUS_RESULTS[2].detections){
+            resultText += "|__ " + PREVIOUS_RESULTS[2].detections[i].type.toUpperCase() + ": \"" + PREVIOUS_RESULTS[2].detections[i].keyword + "\"\n";
+        }
+        resultText += "\n";
+    }
+    resultText += "[+] MACROS\n";
+    for(let i in PREVIOUS_RESULTS[1].macros){
+        resultText += "|__ " + PREVIOUS_RESULTS[1].macros[i].filename + " (" + PREVIOUS_RESULTS[1].macros[i].vba_filename + "):\n\n";
+        resultText += PREVIOUS_RESULTS[1].macros[i].vba_code + "\n";
+    }
+
+    resultTextArea.value = resultText;
+    results.appendChild(resultTextArea);
 }

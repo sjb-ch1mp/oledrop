@@ -19,7 +19,7 @@
                     <div id="button-container">
                         <div id="submit" class="menu-button" onclick="document.getElementById('drop').click()">submit</div>
                         <input id="drop" type="file" onchange="oledrop()" style="display: none;">
-                        <div id="save" class="menu-button" onclick="downloadResults()">save</div>
+                        <div id="save" class="menu-button" onclick="showResultsAsText()">text</div>
                     </div>
                 </div>
                 <div id="notify"></div>
@@ -30,5 +30,6 @@
     <script>
         window.addEventListener("load", padResult);
         window.addEventListener("resize", padResult);
+        let PREVIOUS_RESULTS = null;
     </script>
 </html>
