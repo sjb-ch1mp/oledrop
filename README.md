@@ -1,5 +1,5 @@
 ## oledrop
-### ch1mp
+### Author: ch1mp
 
 #### Attribution
 The amazing [oletools](https://github.com/decalage2/oletools) was created and is maintained by [decalage](http://www.decalage.info). I have nothing to do with that project whatsoever. 
