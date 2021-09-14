@@ -1,6 +1,6 @@
 /* Elements */
 body {
-    background-color: #17202A;
+    background-color: black;
 }
 
 a {
@@ -9,7 +9,7 @@ a {
 
 /* Classes */
 .oledrop-font {
-    font-family: Consolas;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .result-header {
@@ -31,10 +31,10 @@ a {
 .detection {
     padding: 10px;
     margin: 10px;
-    background-color: #C0392B;
+    background-color: black;
     border-radius: 5px;
-    border: 1px #641E16 solid;
-    color: black;
+    border: 1px red solid;
+    color: red;
 }
 
 .result-macro {
@@ -42,10 +42,10 @@ a {
     flex-direction: column;
     padding: 10px;
     margin: 10px;
-    background-color: #EDBB99;
-    border: 1px #BA4A00 solid;
+    background-color: black;
+    border: 1px green solid;
     border-radius: 5px;
-    color: black;
+    color: green;
     font-weight: bold;
 }
 
@@ -75,13 +75,12 @@ a {
 
 .menu-button {
     cursor: pointer;
-    background-color: #EDBB99;
+    background-color: black;
     border-radius: 5px;
     text-align: center;
-    font-weight: bold;
-    padding: 0px 10px 0px 10px;
+    padding: 5px 20px 5px 20px;
     margin: 5px;
-    border: 1px #BA4A00 solid;
+    color: green;
 }
 
 /* Identifiers */
@@ -89,9 +88,9 @@ a {
     display: flex;
     flex-direction: column;
     padding: 10px;
-    background-color: #F9E79F;
+    background-color: green;
     border-radius: 5px;
-    border: 1px #D4AC0D solid;
+    border: 1px green solid;
     position: fixed;
     width: 80%;
 }
