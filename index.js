@@ -4,6 +4,7 @@ const cors = require('cors');
 const exec = require('child_process').exec;
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 
 var app = express();
 app.use(cors());
@@ -41,12 +42,32 @@ app.post('/oledrop', function (req, res) {
 		.send(JSON.stringify(resData));
 	}
 
+	let platform = os.platform();
 	let file = req.files.drop;
 	let tmpPath = path.join(__dirname, "app", "tmp", file.name);
-	let olePath = path.join(__dirname, "venv", "Scripts");
+	let olePath = "";
+	if(/linux/.test(platform)){
+		olePath = path.join(__dirname, "oledrop-venv", "bin", "activate");
+	}else if(/^win/.test(platform)){
+		olePath = path.join(__dirname, "oledrop-venv", "Scripts");
+	}else{
+		resData.push({
+			'error':'PlatformError',
+			'message':'oledrop cannot run on platform ' + platform
+		});
+		return res.setHeader('Content-Type', 'application/json')
+		.status(400)
+		.send(JSON.stringify(resData));
+	}
+
 	const analyze = new Promise( (resolve, reject) => {
 		file.mv(tmpPath);
-		let cmd = "cd " + olePath + " && activate && olevba -j " + tmpPath + " && deactivate";
+		let cmd = "";
+		if(/linux/.test(platform)){
+			cmd = "cd " + olePath + " && activate && olevba -j " + tmpPath + " && deactivate";
+		}else{
+			cmd = "source " + olePath + " && olevba -j " + tmpPath + " && deactivate";
+		}
 		exec(cmd, (err, stdout, stderr) => {
 			if (err) {
 				reject(err);
@@ -78,5 +99,5 @@ app.post('/oledrop', function (req, res) {
 
 var server = app.listen(3000, function () {
 	var port = server.address().port;
-	console.log("oledrop listening at http://localhost:%s", port);
+	console.log(`oledrop listening on port ${port}`);
 });
