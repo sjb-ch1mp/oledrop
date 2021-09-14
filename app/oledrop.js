@@ -1,7 +1,4 @@
-function oledrop(){
-    //olevba -j test.xlsm 2>/dev/null | sed 's/{sis\.\.\./{/g'
-    //sed and stderr redirection required due to issue https://github.com/decalage2/oletools/issues/701
-    
+function oledrop(){    
     //https://stackoverflow.com/questions/36067767/how-do-i-upload-a-file-with-the-js-fetch-api
     let data = new FormData();
     data.append('drop', document.getElementById('drop').files[0]);
@@ -24,6 +21,26 @@ function buildResults(olevbaResults){
     let results = document.getElementById('result');
 
     //check for error results
+	if("error" in olevbaResults[0]){
+		notify(olevbaResults[0].error + ": " + error.message);
+		return;
+	}
+	
+	let type = olevbaResults[0].type;
+	let name = olevbaResults[0].name;
+	if(!olevbaResults[1].hasMacros){
+		notify("No macros detected in file \"" + name + "\" (" + type + ")")
+	}else{
+		notify("Results for file \"" + name + "\" (" + type + ")");
+		if(olevbaResults[2].hasDetections){
+			results.appendChild(buildDetectionContainer(olevbaResults[2].detections));
+		}
+		for(let i in olevbaResults[1].macros){
+			results.appendChild(buildMacroContainer(olevbaResults[1].macros[i]));
+		}
+	}
+
+	/*
     let error = null;
     for(let i in olevbaResults){
         if("error" in olevbaResults[i]){
@@ -34,9 +51,11 @@ function buildResults(olevbaResults){
     if(error){
         notify(error.error + ": " + error.message);
         return;
-    }
+    }*/
 
     //get detections, file, type and macros
+    
+	/*
     let detections = null;
     let macros = null;
     let type = null;
@@ -66,7 +85,7 @@ function buildResults(olevbaResults){
     results.appendChild(buildDetectionContainer(detections));
     for(let i in macros){
         results.appendChild(buildMacroContainer(macros[i]));
-    }
+    }*/
 }
 
 function buildDetectionContainer(detections){
@@ -87,11 +106,11 @@ function buildMacroContainer(macro){
 
     let macroHeader = document.createElement('div');
     macroHeader.classList.add("macro-header");
-    macroHeader.innerText = macro.vba_filename + " (" + macro.subfilename + ")";
+    macroHeader.innerText = macro.filename + " (" + macro.vba_filename + ")";
 
     let macroProper = document.createElement('textarea');
     macroProper.classList.add("macro");
-    macroProper.value = macro.code;
+    macroProper.value = macro.vba_code;
 
     macroContainer.appendChild(macroHeader);
     macroContainer.appendChild(macroProper);
