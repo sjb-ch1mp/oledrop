@@ -64,9 +64,9 @@ app.post('/oledrop', function (req, res) {
 		file.mv(tmpPath);
 		let cmd = "";
 		if(/linux/.test(platform)){
-			cmd = `source ${olePath} && olevba -j ${tmpPath} && deactivate && cd ${__dirname}`;
+			cmd = `source ${olePath} && olevba -j ${tmpPath} && deactivate`;
 		}else{
-			cmd = `cd ${olePath} && activate && olevba -j ${tmpPath} && deactivate`;
+			cmd = `cd ${olePath} && activate && olevba -j ${tmpPath} && deactivate && cd ${__dirname}`;
 		}
 		exec(cmd, (err, stdout, stderr) => {
 			if (err) {
