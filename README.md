@@ -25,4 +25,6 @@ pip install oletools
 deactivate
 # modify shebang
 chmod -x oledrop.py 
+# alter port
+# configure host firewall
 ```
