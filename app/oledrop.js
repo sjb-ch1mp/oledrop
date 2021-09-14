@@ -24,7 +24,7 @@ function buildResults(olevbaResults){
 
     //check for error results
 	if("error" in olevbaResults[0]){
-		notify(olevbaResults[0].error + ": " + error.message);
+		notify(olevbaResults[0].error + ": " + olevbaResults[0].message);
 		return;
 	}
 	
