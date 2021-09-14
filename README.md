@@ -17,15 +17,12 @@ mkdir oledrop/
 cd oledrop/
 unzip oledrop-master.zip
 npm install
-mkdir venv
-cd venv
-python -m venv .
+python -m venv ./oledrop-venv
 source bin/activate
-pip3 sudo python3 -m pip install --upgrade pip
-pip3 install cryptography
-pip3 install oletools
+pip sudo python -m pip install --upgrade pip
+pip install cryptography
+pip install oletools
 deactivate
-
 # modify shebang
 chmod -x oledrop.py 
 ```
