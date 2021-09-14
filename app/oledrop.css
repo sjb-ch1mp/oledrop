@@ -51,7 +51,7 @@ a {
 
 .macro-header {
     padding-bottom: 10px;
-    color: black;
+    color: green;
     font-weight: bold;
     text-align: center;
 }
@@ -60,7 +60,9 @@ a {
     resize: vertical;
     min-height: 150px;
     font-family: 'Courier New', Courier, monospace;
-    border: 1px black solid;
+    border: 1px green solid;
+    background-color: black;
+    color: white;
     border-radius: 3px;
 }
 
@@ -68,7 +70,9 @@ a {
 	width: 100%;
 	min-height: 500px;
 	font-family: 'Courier New', Courier, monospace;
-	border: 1px black solid;
+	border: 1px green solid;
+	color: white;
+	background-color: black;
 	border-radius: 3px;
 	resize: vertical;
 }

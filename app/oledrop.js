@@ -88,6 +88,11 @@ function padResult(){
 function showResultsAsText(){
     if(!PREVIOUS_RESULTS){
         notify("There are no results!");
+    }else if(SHOWING_TEXT){
+	    SHOWING_TEXT = false;
+    	document.getElementById('result').innerHTML = '';
+	    buildResults(PREVIOUS_RESULTS);
+	    return;
     }
 
     let results = document.getElementById('result');
@@ -113,6 +118,7 @@ function showResultsAsText(){
 
     resultTextArea.value = resultText;
     results.appendChild(resultTextArea);
+	SHOWING_TEXT = true;
 }
 
 function border(token, length){

@@ -1,4 +1,4 @@
-#!/home/ch1mp/projects/oledrop/oletools-venv/bin/python
+#!/replace/this/with/absolute/path/to/oletools-venv/bin/python
 
 import sys
 import json
