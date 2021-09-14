@@ -2,7 +2,7 @@
 ### Author: Samuel J. Brookes (ch1mp)
 
 #### Attribution
-The amazing [oletools](https://github.com/decalage2/oletools) was created and is maintained by [Decalage](http://www.decalage.info). I have nothing to do with that project whatsoever. 
+The amazing [oletools](https://github.com/decalage2/oletools) was created and is maintained by [decalage](http://www.decalage.info). I have nothing to do with that project whatsoever. 
 
 #### Purpose
 oledrop is a simple nodejs web app that allows users to submit files to a remote server where they can be analyzed by Decalage's [olevba](https://github.com/decalage2/oletools/wiki/olevba). The results of the analysis and any macros in the document can then be returned and rendered client-side. 
