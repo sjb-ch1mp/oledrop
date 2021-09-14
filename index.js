@@ -47,9 +47,9 @@ app.post('/oledrop', function (req, res) {
 	let tmpPath = path.join(__dirname, "app", "tmp", file.name);
 	let olePath = "";
 	if(/linux/.test(platform)){
-		olePath = path.join(__dirname, "oledrop-venv", "bin", "activate");
+		olePath = path.join(__dirname, "oletools-venv", "bin", "activate");
 	}else if(/^win/.test(platform)){
-		olePath = path.join(__dirname, "oledrop-venv", "Scripts");
+		olePath = path.join(__dirname, "oletools-venv", "Scripts");
 	}else{
 		resData.push({
 			'error':'PlatformError',
@@ -64,9 +64,9 @@ app.post('/oledrop', function (req, res) {
 		file.mv(tmpPath);
 		let cmd = "";
 		if(/linux/.test(platform)){
-			cmd = "cd " + olePath + " && activate && olevba -j " + tmpPath + " && deactivate";
+			cmd = `source ${olePath} && olevba -j ${tmpPath} && deactivate && cd ${__dirname}`;
 		}else{
-			cmd = "source " + olePath + " && olevba -j " + tmpPath + " && deactivate";
+			cmd = `cd ${olePath} && activate && olevba -j ${tmpPath} && deactivate`;
 		}
 		exec(cmd, (err, stdout, stderr) => {
 			if (err) {
