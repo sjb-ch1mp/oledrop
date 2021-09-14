@@ -1,6 +1,8 @@
 function oledrop(){    
     //https://stackoverflow.com/questions/36067767/how-do-i-upload-a-file-with-the-js-fetch-api
     PREVIOUS_RESULTS = null;
+	notify('');
+	document.getElementById('result').innerHTML = '';
 
     let data = new FormData();
     data.append('drop', document.getElementById('drop').files[0]);
@@ -66,6 +68,7 @@ function buildMacroContainer(macro){
 
     let macroProper = document.createElement('textarea');
     macroProper.classList.add("macro");
+	macroProper.setAttribute('spellcheck','false');
     macroProper.value = macro.vba_code;
 
     macroContainer.appendChild(macroHeader);
@@ -91,22 +94,31 @@ function showResultsAsText(){
     results.innerHTML = '';
     
     let resultTextArea = document.createElement('textarea');
-    resultTextArea.classList.add('macro');
+    resultTextArea.classList.add('textresults');
+	resultTextArea.setAttribute('spellcheck','false');
 
-    let resultText = '[+] == RESULTS FOR FILE "' + PREVIOUS_RESULTS[0].name + " (" + PREVIOUS_RESULTS[0].type + ") ==\n\n";
+    let resultText = '\nRESULTS FOR FILE "' + PREVIOUS_RESULTS[0].name + "\" (" + PREVIOUS_RESULTS[0].type + ")\n";
     if(PREVIOUS_RESULTS[2].hasDetections){
-        resultText += "[+] DETECTIONS\n";
-        for(let i in PREVIOUS_RESULTS[2].detections){
-            resultText += "|__ " + PREVIOUS_RESULTS[2].detections[i].type.toUpperCase() + ": \"" + PREVIOUS_RESULTS[2].detections[i].keyword + "\"\n";
+        resultText += "\n" + border("=", 44) + " DETECTIONS " + border("=", 44) + "\n";
+        for(let i=0; i<PREVIOUS_RESULTS[2].detections.length; i++){
+            resultText += "[" + i + "] " + PREVIOUS_RESULTS[2].detections[i].type + ": \"" + PREVIOUS_RESULTS[2].detections[i].keyword + "\"\n";
         }
-        resultText += "\n";
+	    resultText += "\n";
     }
-    resultText += "[+] MACROS\n";
-    for(let i in PREVIOUS_RESULTS[1].macros){
-        resultText += "|__ " + PREVIOUS_RESULTS[1].macros[i].filename + " (" + PREVIOUS_RESULTS[1].macros[i].vba_filename + "):\n\n";
-        resultText += PREVIOUS_RESULTS[1].macros[i].vba_code + "\n";
+    resultText += border("=", 46) + " MACROS " + border("=", 46) + "\n";
+    for(let i=0; i<PREVIOUS_RESULTS[1].macros.length; i++){
+        resultText += ((i>0)?border("-", 100) + "\n":"") + "[" + i + "] " + PREVIOUS_RESULTS[1].macros[i].filename + " (" + PREVIOUS_RESULTS[1].macros[i].vba_filename + ")\n\n";
+        resultText += PREVIOUS_RESULTS[1].macros[i].vba_code.trim() + "\n";
     }
 
     resultTextArea.value = resultText;
     results.appendChild(resultTextArea);
+}
+
+function border(token, length){
+	let b = '';
+	for(let i=0; i<length; i++){
+		b += token;
+	}
+	return b;
 }

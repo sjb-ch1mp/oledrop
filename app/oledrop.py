@@ -1,4 +1,4 @@
-#!/path/to/oletools-venv/bin/python
+#!/home/ch1mp/projects/oledrop/oletools-venv/bin/python
 
 import sys
 import json
@@ -43,7 +43,7 @@ def analyze(filepath):
         return results
     except Exception as err:
         #raise err
-        print(err)
+        #print(err)
         error = {"error":"oledrop.py",
                 "message":str(err)}
         results.append(error)

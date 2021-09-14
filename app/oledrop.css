@@ -64,6 +64,15 @@ a {
     border-radius: 3px;
 }
 
+.textresults {
+	width: 100%;
+	min-height: 500px;
+	font-family: 'Courier New', Courier, monospace;
+	border: 1px black solid;
+	border-radius: 3px;
+	resize: vertical;
+}
+
 .menu-button {
     cursor: pointer;
     background-color: #EDBB99;

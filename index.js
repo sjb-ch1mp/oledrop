@@ -47,7 +47,7 @@ app.post('/oledrop', function (req, res) {
 
 	const analyze = new Promise( (resolve, reject) => {
 		file.mv(tmpPath);
-		let cmd = `${olePath} ${tmpPath}`;
+		let cmd = `${olePath} ${tmpPath} 2>/dev/null`;
 		exec(cmd, (err, stdout, stderr) => {
 			if (err) {
 				reject(err);
