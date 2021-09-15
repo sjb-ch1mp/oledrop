@@ -112,7 +112,7 @@ function showResultsAsText(){
     }
     resultText += border("=", 46) + " MACROS " + border("=", 46) + "\n";
     for(let i=0; i<PREVIOUS_RESULTS[1].macros.length; i++){
-        resultText += ((i>0)?border("-", 100) + "\n":"") + "[" + i + "] " + PREVIOUS_RESULTS[1].macros[i].vba_filename + " (" + PREVIOUS_RESULTS[1].macros[i].stream_name + ")\n\n";
+        resultText += ((i>0)?border("-", 100) + "\n":"") + "[" + i + "] " + PREVIOUS_RESULTS[1].macros[i].vba_filename + " (" + PREVIOUS_RESULTS[1].macros[i].stream_path + ")\n\n";
         resultText += PREVIOUS_RESULTS[1].macros[i].vba_code.trim() + "\n";
     }
 
